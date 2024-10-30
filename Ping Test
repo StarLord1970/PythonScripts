@@ -1,0 +1,26 @@
+import os
+import re
+import platform
+
+def ping(url):
+    try:
+        if platform.system().lower() == "windows":
+            output = os.popen(f"ping -n 1 {url}").read()
+        else:
+            output = os.popen(f"ping -c 1 {url}").read()
+
+        latency = re.findall(r"time=([\d.]+) ms", output)
+        if latency:
+            return float(latency[0])
+        else:
+            return None
+    except:
+        return None
+
+url = "www.google.com"
+latency = ping(url)
+if latency is not None:
+    print(f"Latency to {url}: {latency} ms")
+else:
+    print(f"Could not ping {url}")
+
